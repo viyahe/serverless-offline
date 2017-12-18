@@ -11,7 +11,11 @@ function runPythonHandler(funOptions, options){
       process.stdin.end();
       let results = ''
       process.stdout.on('data', (data) => {
-         results = results + data;
+        const lines = data.toString().split("\n");
+
+        for(let i=0; i<lines.length; i++) {
+          results += lines[i];
+        }
       });
       process.stderr.on('data', (data) => {
          context.fail(data);
@@ -25,7 +29,7 @@ function runPythonHandler(funOptions, options){
               }
           } else {
               context.succeed( code ,results );
-          }  
+          }
         });
       }
 }
@@ -49,7 +53,7 @@ module.exports = {
     };
   },
 
-  
+
   // Create a function handler
   // The function handler is used to simulate Lambda functions
   createHandler(funOptions, options) {
